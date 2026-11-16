@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+title: "limboAudit: Deterministic LaTeX/BibTeX Citation, Numerical Traceability & Statistical Diagnostic Gate"
+message: "If you use limboAudit in your research, please cite the software package and accompanying AveryCorp Suite II methodology below."
+type: software
+authors:
+  - family-names: "Karlin"
+    given-names: "Avery"
+    email: "ak5232@columbia.edu"
+    orcid: "https://orcid.org/0000-0003-3848-6782"
+    affiliation: "AveryCorp Institute; Department of Applied Physics and Applied Mathematics, Columbia University; Department of Computer Science, University of Colorado Boulder"
+repository-code: "https://github.com/akarlin3/limboAudit"
+url: "https://github.com/akarlin3/limboAudit"
+license: MIT
+version: "1.0.0"
+date-released: "2026-11-15"
+keywords:
+  - zero-phantom citations
+  - BibTeX verification
+  - manuscript numerical traceability
+  - statistical consistency
+  - GRIM test
+  - release hold gate
+  - reproducible research
+  - AveryCorp Suite II
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Karlin"
+      given-names: "Avery"
+      email: "ak5232@columbia.edu"
+      orcid: "https://orcid.org/0000-0003-3848-6782"
+      affiliation: "AveryCorp Institute; Department of Applied Physics and Applied Mathematics, Columbia University; Department of Computer Science, University of Colorado Boulder"
+  title: "Trustworthy Uncertainty Quantification for Quantitative Body MRI in Biologically Adaptive Radiotherapy: From Inverse-Problem Identifiability to Clinical Decision Gates"
+  journal: "Physics in Medicine & Biology"
+  year: 2026

@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Audit & Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package and dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Lint with ruff
+        run: ruff check src tests
+
+      - name: Run pytest suite
+        run: pytest -q
+
+      - name: Enforce scientific regression ratchet & publish step summary
+        run: |
+          limbo-audit audit --assert-baseline audit-baseline.json
+          limbo-audit audit --markdown >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run CLI demo smoke check & verify package build
+        run: |
+          limbo-audit demo
+          python -m build
+          twine check dist/*

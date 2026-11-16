@@ -1,0 +1,86 @@
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "limbo-audit"
+version = "1.0.0"
+description = "Deterministic read-only LaTeX/BibTeX citation verification, manuscript number-to-artifact traceability, GRIM/p-value statistical checks, and provisional release-hold gate"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Avery Karlin", email = "ak5232@columbia.edu"},
+]
+keywords = [
+    "reproducibility",
+    "scientific-audit",
+    "citation-verification",
+    "bibtex",
+    "manuscript-consistency",
+    "statcheck",
+    "grim-test",
+    "release-gate",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Text Processing :: Markup :: LaTeX",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "ruff>=0.4",
+    "build>=1.0",
+    "twine>=4.0",
+]
+
+[project.scripts]
+limbo-audit = "limbo_audit.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/akarlin3/limboAudit"
+Repository = "https://github.com/akarlin3/limboAudit"
+Issues = "https://github.com/akarlin3/limboAudit/issues"
+Documentation = "https://averycorp.org/services.html"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/limbo_audit"]
+artifacts = ["src/limbo_audit/py.typed"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/src/limbo_audit/py.typed",
+    "/tests",
+    "/README.md",
+    "/LICENSE",
+    "/CITATION.cff",
+    "/audit-baseline.json",
+    "/pyproject.toml",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
