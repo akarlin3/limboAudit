@@ -11,7 +11,7 @@ authors:
 repository-code: "https://github.com/akarlin3/limboAudit"
 url: "https://github.com/akarlin3/limboAudit"
 license: MIT
-version: "1.0.0"
+version: "2.0.0"
 date-released: "2026-11-15"
 keywords:
   - zero-phantom citations

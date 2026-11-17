@@ -1,4 +1,4 @@
-"""Tests for standardized AveryCorp AuditReport & AuditAttestation contract in limboAudit (v1.0.0 MIT Open-Core)."""
+"""Tests for standardized AveryCorp AuditReport & AuditAttestation contract in limboAudit (v2.0.0 MIT Open-Core)."""
 from __future__ import annotations
 
 import json
@@ -45,7 +45,7 @@ REQUIRED_ATTESTATION_KEYS = {
 
 
 def test_audit_report_contract_and_determinism() -> None:
-    assert __version__ == "1.0.0"
+    assert __version__ == "2.0.0"
     rep1 = run_audit(seed=42)
     rep2 = run_audit(seed=42)
     assert isinstance(rep1, AuditReport)
@@ -53,7 +53,7 @@ def test_audit_report_contract_and_determinism() -> None:
     assert rep1 == rep2
 
     assert rep1.package == "limbo-audit"
-    assert rep1.version == "1.0.0"
+    assert rep1.version == "2.0.0"
     assert rep1.suite == "Suite II: Scientific Identifiability & Null-Audit Suite"
     assert (
         rep1.stage_role
@@ -122,7 +122,7 @@ def test_cli_demo_json_and_markdown(capsys) -> None:
     out_demo = json.loads(capsys.readouterr().out)
     assert set(out_demo.keys()) == REQUIRED_AUDIT_KEYS
     assert out_demo["package"] == "limbo-audit"
-    assert out_demo["version"] == "1.0.0"
+    assert out_demo["version"] == "2.0.0"
 
     rc_md = main(["audit", "--seed", "42", "--markdown"])
     assert rc_md == 0

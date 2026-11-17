@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "limbo-audit"
-version = "1.0.0"
+version = "2.0.0"
 description = "Deterministic read-only LaTeX/BibTeX citation verification, manuscript number-to-artifact traceability, GRIM/p-value statistical checks, and provisional release-hold gate"
 readme = "README.md"
 requires-python = ">=3.10"

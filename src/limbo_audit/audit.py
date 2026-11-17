@@ -36,7 +36,7 @@ from .fixtures import (
 )
 
 PACKAGE_NAME = "limbo-audit"
-PACKAGE_VERSION = "1.0.0"
+PACKAGE_VERSION = "2.0.0"
 
 SUITE_I_NAME: Literal["Suite I: Clinical Quantitative-MRI Trust Spine"] = (
     "Suite I: Clinical Quantitative-MRI Trust Spine"

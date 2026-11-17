@@ -1,4 +1,4 @@
-# `limboAudit` (`limbo-audit` v1.0.0 — MIT Open-Core Diagnostic Edition)
+# `limboAudit` (`limbo-audit` v2.0.0 — MIT Open-Core Diagnostic Edition)
 
 [![PyPI](https://img.shields.io/pypi/v/limbo-audit.svg)](https://pypi.org/project/limbo-audit/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/limbo-audit.svg)](https://pypi.org/project/limbo-audit/)
@@ -141,7 +141,7 @@ Open `overleaf_bookmarklet.html`, drag the gold **🛡️ limboAudit Overleaf** 
 
 ## AveryCorp Executive Manuscript Audits (Commercial Services)
 
-Public `limbo-audit` (`v1.0.0`, MIT) provides deterministic **read-only** `.tex` / `.bib` / `.md` diagnostics.
+Public `limbo-audit` (`v2.0.0`, MIT) provides deterministic **read-only** `.tex` / `.bib` / `.md` diagnostics.
 
 For research labs, biotech/medtech R&D teams, and principal investigators preparing high-stakes journal, conference, or regulatory submissions, **AveryCorp Executive Manuscript Audits** provide end-to-end automated remediation and multi-format verification, including:
 
