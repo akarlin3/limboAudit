@@ -60,11 +60,15 @@ Documentation = "https://averycorp.org/services.html"
 packages = ["src/limbo_audit"]
 artifacts = ["src/limbo_audit/py.typed"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"extensions/overleaf-chrome" = "limbo_audit/_overleaf_extension"
+
 [tool.hatch.build.targets.sdist]
 include = [
     "/src",
     "/src/limbo_audit/py.typed",
     "/tests",
+    "/extensions",
     "/README.md",
     "/LICENSE",
     "/CITATION.cff",

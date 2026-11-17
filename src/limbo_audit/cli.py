@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .audit import PACKAGE_VERSION, assert_baseline, run_audit, write_baseline
+from .bookmarklet import build_bookmarklet, package_extension_zip, render_bookmarklet_html
 from .citations import audit_citations, extract_prose_citations
 from .consistency import (
     audit_numerical_consistency,
@@ -789,6 +790,48 @@ def _cmd_demo(args: argparse.Namespace) -> int:
     return 0 if report.status != "HALT" else 1
 
 
+def _cmd_export_bookmarklet(args: argparse.Namespace) -> int:
+    ext_dir = Path(args.extension_dir) if args.extension_dir else None
+    try:
+        build = build_bookmarklet(ext_dir)
+    except FileNotFoundError as exc:
+        print(f"[ERROR] LIMBO-NO-EXTENSION: {exc}", file=sys.stderr)
+        return 2
+    summary: dict[str, Any] = {
+        "bookmarklet_bytes": build.size_bytes,
+        "bookmarklet_sha256": build.sha256,
+        "out_html": None,
+        "package_zip": None,
+        "zip_files": [],
+    }
+    if args.out_html:
+        out_html = Path(args.out_html)
+        out_html.parent.mkdir(parents=True, exist_ok=True)
+        out_html.write_text(render_bookmarklet_html(build), encoding="utf-8")
+        summary["out_html"] = str(out_html)
+    if args.package_zip:
+        summary["zip_files"] = package_extension_zip(Path(args.package_zip), ext_dir)
+        summary["package_zip"] = str(args.package_zip)
+    if args.print_uri:
+        summary["uri"] = build.uri
+
+    if args.json:
+        print(json.dumps(summary, indent=2))
+        return 0
+    print("limbo-audit export-bookmarklet: 1-click Overleaf Audit Bookmarklet")
+    print(f"  Bookmarklet: {build.size_bytes:,} bytes (sha256 {build.sha256[:16]})")
+    if summary["out_html"]:
+        print(f"  Install page: {summary['out_html']} (drag the gold button to your bookmarks bar)")
+    if summary["package_zip"]:
+        print(
+            f"  Chrome Web Store bundle: {summary['package_zip']} ({len(summary['zip_files'])} files)"
+        )
+    if args.print_uri:
+        print(build.uri)
+    print(OPEN_CORE_CTA_FOOTER)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="limbo-audit",
@@ -955,6 +998,29 @@ def build_parser() -> argparse.ArgumentParser:
     p_demo.add_argument("--markdown", action="store_true", help="Emit Markdown step summary")
     p_demo.set_defaults(func=_cmd_demo)
 
+    p_bm = sub.add_parser(
+        "export-bookmarklet",
+        help="Compile the client-side Overleaf scanner into a 1-click bookmarklet and package the Chrome extension.",
+    )
+    p_bm.add_argument(
+        "--out-html",
+        default="overleaf_bookmarklet.html",
+        help="Drag-to-bookmarks-bar install page (default: overleaf_bookmarklet.html; '' to skip)",
+    )
+    p_bm.add_argument(
+        "--package-zip",
+        default="overleaf_extension.zip",
+        help="Chrome Web Store upload bundle (default: overleaf_extension.zip; '' to skip)",
+    )
+    p_bm.add_argument(
+        "--extension-dir",
+        default=None,
+        help="Path to extensions/overleaf-chrome (default: auto-detected)",
+    )
+    p_bm.add_argument("--print-uri", action="store_true", help="Also print the javascript: URI")
+    p_bm.add_argument("--json", action="store_true", help="Emit structured JSON summary")
+    p_bm.set_defaults(func=_cmd_export_bookmarklet)
+
     return parser
 
 
@@ -982,7 +1048,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 ),
                 as_json=as_json,
             )
-        for tok in args_list[1:]:
+        # `export-bookmarklet --package-zip x.zip` writes (not ingests) a .zip archive.
+        doc_args = [] if first == "export-bookmarklet" else args_list[1:]
+        for tok in doc_args:
             if _is_pro_document_arg(tok):
                 return _emit_pro_cta(
                     feature_label=f"Native `{Path(tok).suffix}` Preprint & Archive Ingestion",

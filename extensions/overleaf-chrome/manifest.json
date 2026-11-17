@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "limboAudit for Overleaf & arXiv",
+  "short_name": "limboAudit",
+  "version": "1.0.0",
+  "description": "1-click, 100% client-side audit of your Overleaf .tex/.bib: untraced stats, DOI gaps, ?? refs, path leaks, abstract limits.",
+  "minimum_chrome_version": "111",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://www.overleaf.com/*", "https://arxiv.org/*"],
+  "action": {
+    "default_title": "limboAudit: audit this manuscript",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.overleaf.com/project/*"],
+      "js": ["bridge.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://www.overleaf.com/project/*", "https://arxiv.org/*"],
+      "js": ["scanner.js", "content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

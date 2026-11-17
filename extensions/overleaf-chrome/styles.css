@@ -1,0 +1,258 @@
+/* limboAudit for Overleaf & arXiv: Minimalist Luxury (Navy #121b2d / Gold #d4af37) */
+#limbo-audit-pill,
+#limbo-audit-drawer,
+#limbo-audit-toast {
+  --limbo-navy: #121b2d;
+  --limbo-navy-2: #1b2740;
+  --limbo-navy-3: #24324f;
+  --limbo-gold: #d4af37;
+  --limbo-gold-soft: rgba(212, 175, 55, 0.14);
+  --limbo-ink: #f4efe1;
+  --limbo-muted: #a9b1c3;
+  --limbo-high: #e5734f;
+  --limbo-medium: #d4af37;
+  --limbo-low: #7f9cc9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+#limbo-audit-drawer *,
+#limbo-audit-pill * {
+  box-sizing: border-box;
+}
+
+#limbo-audit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  margin: 0 8px;
+  padding: 0 12px;
+  border: 1px solid var(--limbo-gold);
+  border-radius: 999px;
+  background: var(--limbo-navy);
+  color: var(--limbo-gold);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+#limbo-audit-pill:hover { background: var(--limbo-navy-3); }
+#limbo-audit-pill:focus-visible { outline: 2px solid var(--limbo-gold); outline-offset: 2px; }
+#limbo-audit-pill[data-grade="F"],
+#limbo-audit-pill[data-grade="D"] { border-color: var(--limbo-high); }
+#limbo-audit-pill.limbo-floating {
+  position: fixed;
+  top: 10px;
+  right: 16px;
+  z-index: 2147483000;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+#limbo-audit-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2147483001;
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 100vw);
+  height: 100vh;
+  background: var(--limbo-navy);
+  color: var(--limbo-ink);
+  border-left: 1px solid var(--limbo-gold);
+  box-shadow: -18px 0 40px rgba(0, 0, 0, 0.45);
+  transform: translateX(105%);
+  transition: transform 0.22s ease;
+  font-size: 13px;
+}
+#limbo-audit-drawer.limbo-open { transform: translateX(0); }
+@media (prefers-reduced-motion: reduce) {
+  #limbo-audit-drawer { transition: none; }
+}
+
+#limbo-audit-drawer .limbo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 18px 20px 10px;
+  border-bottom: 1px solid var(--limbo-navy-3);
+}
+#limbo-audit-drawer .limbo-eyebrow {
+  color: var(--limbo-gold);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+#limbo-audit-drawer .limbo-title {
+  margin-top: 2px;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: 600;
+}
+#limbo-audit-drawer .limbo-close {
+  border: 0;
+  background: transparent;
+  color: var(--limbo-muted);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+#limbo-audit-drawer .limbo-close:hover { color: var(--limbo-gold); }
+
+#limbo-audit-drawer .limbo-scorebar {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 20px;
+}
+#limbo-audit-drawer .limbo-score {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--limbo-gold);
+  border-radius: 50%;
+  font-family: Georgia, serif;
+  font-size: 24px;
+  color: var(--limbo-gold);
+}
+#limbo-audit-drawer .limbo-score[data-grade="D"],
+#limbo-audit-drawer .limbo-score[data-grade="F"] { border-color: var(--limbo-high); color: var(--limbo-high); }
+#limbo-audit-drawer .limbo-counts { font-weight: 600; }
+#limbo-audit-drawer .limbo-source { color: var(--limbo-muted); font-size: 11px; margin-top: 3px; overflow-wrap: anywhere; }
+
+#limbo-audit-drawer .limbo-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0 20px 10px;
+  color: var(--limbo-muted);
+  font-size: 11px;
+}
+#limbo-audit-drawer select {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 4px 6px;
+  border: 1px solid var(--limbo-navy-3);
+  border-radius: 6px;
+  background: var(--limbo-navy-2);
+  color: var(--limbo-ink);
+  font-size: 12px;
+}
+#limbo-audit-drawer .limbo-link {
+  border: 0;
+  background: none;
+  color: var(--limbo-gold);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#limbo-audit-drawer .limbo-wordcount { padding: 0 20px; }
+#limbo-audit-drawer .limbo-wc-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding-bottom: 10px; }
+#limbo-audit-drawer .limbo-chip {
+  padding: 2px 8px;
+  border: 1px solid var(--limbo-navy-3);
+  border-radius: 999px;
+  color: var(--limbo-muted);
+  font-size: 11px;
+}
+#limbo-audit-drawer .limbo-chip-target { border-color: var(--limbo-gold); color: var(--limbo-gold); }
+#limbo-audit-drawer .limbo-chip-over { border-color: var(--limbo-high); color: var(--limbo-high); }
+
+#limbo-audit-drawer .limbo-findings {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 4px 12px 12px;
+  border-top: 1px solid var(--limbo-navy-3);
+}
+#limbo-audit-drawer .limbo-cat {
+  margin: 12px 8px 6px;
+  color: var(--limbo-gold);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+#limbo-audit-drawer .limbo-finding {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin: 0 0 6px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-left: 3px solid var(--limbo-low);
+  border-radius: 6px;
+  background: var(--limbo-navy-2);
+  color: var(--limbo-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+#limbo-audit-drawer .limbo-finding:hover { border-color: var(--limbo-navy-3); background: var(--limbo-navy-3); }
+#limbo-audit-drawer .limbo-sev-high { border-left-color: var(--limbo-high); }
+#limbo-audit-drawer .limbo-sev-medium { border-left-color: var(--limbo-medium); }
+#limbo-audit-drawer .limbo-line {
+  flex: 0 0 auto;
+  min-width: 36px;
+  color: var(--limbo-gold);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+}
+#limbo-audit-drawer .limbo-msg { min-width: 0; }
+#limbo-audit-drawer .limbo-sev {
+  color: var(--limbo-muted);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+#limbo-audit-drawer .limbo-msg code {
+  display: block;
+  margin-top: 4px;
+  color: var(--limbo-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+#limbo-audit-drawer .limbo-empty { padding: 24px 8px; color: var(--limbo-muted); text-align: center; }
+
+#limbo-audit-drawer .limbo-ctas {
+  display: grid;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--limbo-gold);
+  background: linear-gradient(180deg, var(--limbo-navy) 0%, var(--limbo-navy-2) 100%);
+}
+#limbo-audit-drawer .limbo-cta {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--limbo-gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--limbo-gold);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+#limbo-audit-drawer .limbo-cta:hover { background: var(--limbo-gold-soft); }
+#limbo-audit-drawer .limbo-cta-gold { background: var(--limbo-gold); color: var(--limbo-navy); }
+#limbo-audit-drawer .limbo-cta-gold:hover { background: #e2c25a; }
+#limbo-audit-drawer .limbo-cta-ghost { border-color: var(--limbo-navy-3); color: var(--limbo-ink); }
+#limbo-audit-drawer .limbo-foot { padding: 0 20px 14px; color: var(--limbo-muted); font-size: 10px; text-align: center; background: var(--limbo-navy-2); }
+
+#limbo-audit-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2147483002;
+  padding: 10px 14px;
+  border: 1px solid var(--limbo-gold);
+  border-radius: 8px;
+  background: var(--limbo-navy);
+  color: var(--limbo-gold);
+  font-size: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}

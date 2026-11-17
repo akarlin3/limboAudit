@@ -63,9 +63,49 @@ limbo-audit check-release --config release_config.json --bib refs.bib --tex main
 
 # Run the standardized Suite II canonical benchmark & baseline ratchet
 limbo-audit audit --seed 42 --assert-baseline audit-baseline.json
+
+# Build the 1-click Overleaf bookmarklet + Chrome Web Store zip (see below)
+limbo-audit export-bookmarklet
 ```
 
 > **Empty-Directory Guard:** Running `limbo-audit check-all` on a directory with no `.tex` or `.md` manuscript fails explicitly with `[ERROR] LIMBO-NO-MANUSCRIPT` (exit code `2`) rather than silently passing.
+
+---
+
+## limboAudit for Overleaf & arXiv (Chrome Extension + 1-Click Bookmarklet)
+
+Audit the `.tex` / `.bib` file you are editing in Overleaf in one click, with **zero install of Python, zero server upload and zero LLM training**: the scanner (`extensions/overleaf-chrome/scanner.js`) runs deterministically inside your own browser tab, typically in well under 50 ms.
+
+| Check | What it flags |
+| --- | --- |
+| **Untraced Numbers & Fragile Stats** | Hardcoded `p = …`, `r = …`, `±` / `\pm`, `\%`, `N = …` outside `numbers.tex` macros; borderline `p = 0.04x`; thresholded `p < .05`; GRIM-impossible means (e.g. `M = 5.19` with `N = 28`) |
+| **Citation & DOI Hygiene** | Empty `\cite{}`, `\cite{?}` / `TODO` keys, literal `[?]`; `.bib` `@article`/`@inproceedings` without `doi =`; duplicate keys; stale arXiv/bioRxiv/medRxiv preprints |
+| **Figure/Table & Anonymization Leaks** | `\ref{…}` with no matching `\label`, literal `??`, `/Users/…`, `/home/…`, `C:\Users\…` path leaks (including inside `%` comments, which arXiv still ships), unpinned random seeds |
+| **Target-Venue Word Count** | Live abstract word count against MRM (250), Nature (150) and PLOS ONE (300) defaults |
+
+The `🛡️ limboAudit: [Score]/100` pill sits in the Overleaf toolbar; clicking it opens a navy/gold slide-over drawer with line-numbered findings (click to jump to the line) and three actions: the **⚡ $19 Instant Auto-Fix Macro & BibTeX Pack**, the **🏛️ $650 48h Executive Audit & Referee #2 Dossier**, and **📧 Copy P-Card Quote + NIH DMS Memo for My PI** (a pre-filled email citing 2 CFR § 200.320 and NIH NOT-OD-21-013, copied to your clipboard).
+
+> Venue word limits are built-in defaults; always confirm against the journal's current author guidelines.
+
+### Option A: Chrome Extension (Manifest V3)
+
+1. `chrome://extensions` → enable **Developer mode** → **Load unpacked** → select `extensions/overleaf-chrome/`.
+2. Open an Overleaf project (or an arXiv abstract page). The pill appears in the toolbar; the popup also scans pasted text.
+
+Permissions: `activeTab`, `scripting`, `storage` (venue preference only); hosts: `https://www.overleaf.com/*`, `https://arxiv.org/*`. A tiny MAIN-world bridge (`bridge.js`) reads the full CodeMirror 6 document, so findings cover the whole file rather than just the visible lines.
+
+### Option B: 1-Click Overleaf Audit Bookmarklet (no Chrome Web Store needed)
+
+```bash
+# Compile the scanner into a javascript:(function(){...})(); bookmarklet + install page,
+# and package the extension as a ready-to-upload Chrome Web Store bundle
+limbo-audit export-bookmarklet --out-html overleaf_bookmarklet.html --package-zip overleaf_extension.zip
+
+# Options: --print-uri (print the javascript: URI), --json, --extension-dir PATH,
+#          --out-html "" / --package-zip "" to skip an output
+```
+
+Open `overleaf_bookmarklet.html`, drag the gold **🛡️ limboAudit Overleaf** button to your bookmarks bar, then click it in any Overleaf project. Both outputs are byte-for-byte deterministic. The same install page can be embedded on `averycorp.org/services.html`.
 
 ---
 

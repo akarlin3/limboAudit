@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>limboAudit for Overleaf</title>
+  <style>
+    :root { --navy: #121b2d; --navy2: #1b2740; --navy3: #24324f; --gold: #d4af37; --ink: #f4efe1; --muted: #a9b1c3; --high: #e5734f; }
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 360px; background: var(--navy); color: var(--ink); font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif; }
+    header { padding: 16px 18px 10px; border-bottom: 1px solid var(--navy3); }
+    .eyebrow { color: var(--gold); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 2px 0 0; font: 600 20px Georgia, "Times New Roman", serif; }
+    section { padding: 12px 18px; border-bottom: 1px solid var(--navy3); }
+    .row { display: flex; gap: 12px; align-items: center; }
+    .score { flex: 0 0 auto; width: 56px; height: 56px; display: grid; place-items: center; border: 2px solid var(--gold); border-radius: 50%; color: var(--gold); font: 22px Georgia, serif; }
+    .score.bad { border-color: var(--high); color: var(--high); }
+    .muted { color: var(--muted); font-size: 11px; }
+    button, select, textarea { font: inherit; }
+    .btn { width: 100%; margin-top: 8px; padding: 9px 11px; border: 1px solid var(--gold); border-radius: 8px; background: transparent; color: var(--gold); font-weight: 600; text-align: left; cursor: pointer; }
+    .btn:hover { background: rgba(212, 175, 55, .14); }
+    .btn.gold { background: var(--gold); color: var(--navy); }
+    .btn.ghost { border-color: var(--navy3); color: var(--ink); }
+    select, textarea { width: 100%; border: 1px solid var(--navy3); border-radius: 6px; background: var(--navy2); color: var(--ink); }
+    select { padding: 4px 6px; }
+    textarea { height: 84px; padding: 6px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; }
+    ul { list-style: none; margin: 8px 0 0; padding: 0; max-height: 150px; overflow-y: auto; }
+    li { margin-bottom: 5px; padding: 6px 8px; border-left: 3px solid #7f9cc9; border-radius: 4px; background: var(--navy2); font-size: 12px; }
+    li.high { border-left-color: var(--high); }
+    li.medium { border-left-color: var(--gold); }
+    .ln { color: var(--gold); font-family: ui-monospace, monospace; font-size: 11px; margin-right: 6px; }
+    footer { padding: 10px 18px 14px; color: var(--muted); font-size: 10px; text-align: center; }
+    label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">AveryCorp &middot; limboAudit</div>
+    <h1>Pre-Submission Check</h1>
+  </header>
+  <section>
+    <div class="row">
+      <div class="score" id="score">&hellip;</div>
+      <div>
+        <div id="summary">Scanning the active tab&hellip;</div>
+        <div class="muted" id="source"></div>
+      </div>
+    </div>
+    <button class="btn ghost" id="open-drawer" type="button">Open findings drawer on page</button>
+  </section>
+  <section>
+    <label for="venue">Target venue (abstract word limit)</label>
+    <select id="venue"></select>
+  </section>
+  <section>
+    <label for="paste">Or paste .tex / .bib text (stays in this popup)</label>
+    <textarea id="paste" spellcheck="false" placeholder="\begin{abstract} ... p = 0.043 ... \end{abstract}"></textarea>
+    <button class="btn ghost" id="scan-paste" type="button">Scan pasted text</button>
+    <ul id="findings"></ul>
+  </section>
+  <section>
+    <button class="btn gold" id="cta-fix" type="button"></button>
+    <button class="btn" id="cta-audit" type="button"></button>
+    <button class="btn ghost" id="cta-memo" type="button"></button>
+    <div class="muted" id="memo-status" role="status"></div>
+  </section>
+  <footer>100% client-side &middot; zero server upload &middot; zero LLM training</footer>
+  <script src="scanner.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
