@@ -569,6 +569,10 @@ def _cmd_check_all(args: argparse.Namespace) -> int:
                 )
             return _emit_no_manuscript_error(project_dir, as_json=bool(args.json))
 
+    explicit_bibs = [Path(b) for b in (getattr(args, "bib", None) or []) if b]
+    if explicit_bibs:
+        bib_files = [b for b in explicit_bibs if b.is_file()]
+
     combined_prose = "\n".join(_safe_read_text(p) for p in manuscript_files)
     primary_file = manuscript_files[0].name
     diagnostics: list[dict[str, Any]] = []
@@ -618,6 +622,9 @@ def _cmd_check_all(args: argparse.Namespace) -> int:
             ".limbo-audit.json",
         }:
             artifact_candidates.append(str(top_json))
+    for extra_art in getattr(args, "artifacts", None) or []:
+        if extra_art and Path(extra_art).exists() and str(Path(extra_art)) not in artifact_candidates:
+            artifact_candidates.append(str(Path(extra_art)))
 
     claims_p = project_dir / "claims.json"
     claims_arg = str(claims_p) if claims_p.is_file() else None
@@ -943,8 +950,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p_all.add_argument("--rtol", type=float, default=1e-4, help="Relative numerical tolerance")
     p_all.add_argument("--atol", type=float, default=1e-4, help="Absolute numerical tolerance")
+    p_all.add_argument(
+        "--bib", nargs="+", default=[], help="Explicit .bib file(s) (overrides auto-discovery)"
+    )
+    p_all.add_argument(
+        "--artifacts", nargs="+", default=[], help="Extra JSON artifact file(s) or directories"
+    )
     p_all.add_argument("--json", action="store_true", help="Emit structured JSON summary")
     p_all.set_defaults(func=_cmd_check_all)
+
+    from .ci_summary import register_ci_summary_parser
+
+    register_ci_summary_parser(sub)
 
     p_demo = sub.add_parser(
         "demo",

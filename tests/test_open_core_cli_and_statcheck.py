@@ -44,6 +44,7 @@ def test_zero_proprietary_modules_present_in_source_tree() -> None:
     assert present_files == {
         "__init__.py",
         "audit.py",
+        "ci_summary.py",
         "citations.py",
         "cli.py",
         "consistency.py",

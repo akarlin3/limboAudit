@@ -1,5 +1,7 @@
 # `limboAudit` (`limbo-audit` v1.0.0 — MIT Open-Core Diagnostic Edition)
 
+[![PyPI](https://img.shields.io/pypi/v/limbo-audit.svg)](https://pypi.org/project/limbo-audit/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/limbo-audit.svg)](https://pypi.org/project/limbo-audit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](pyproject.toml)
 [![AveryCorp Suite II](https://img.shields.io/badge/AveryCorp-Suite%20II%20Null--Audit-0f766e.svg)](https://github.com/akarlin3/IVIMBench)
@@ -7,6 +9,29 @@
 Deterministic, lightweight (`numpy>=1.24` only) read-only diagnostic gates for **LaTeX (`.tex`)**, **BibTeX (`.bib`)**, and **Markdown (`.md`)** scientific manuscripts.
 
 `limboAudit` forms the open-source diagnostic core of **AveryCorp Suite II (Scientific Identifiability & Null-Audit Suite)**, catching phantom citations, unverified numerical macros, statistical reporting inconsistencies, and unmet upstream release holds before peer review.
+
+---
+
+## Use as a 10-Second GitHub Action in Your Lab Repository
+
+Add `.github/workflows/manuscript-audit.yml`:
+
+```yaml
+name: Manuscript Audit
+on: [push, pull_request]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: akarlin3/limboAudit@v2
+```
+
+Every run writes a readiness score, an engine breakdown (citations & DOIs, GRIM/p-values, number-to-artifact traceability, preprint upgrades, figure provenance) and the top 5 findings to the **Job Summary**, plus a SARIF log (`limbo-audit.sarif`). By default it only reports and warns. Set `fail-on-error: 'true'` to block merges, and `profile: strict` to fail on warnings too. Other inputs: `target-dir`, `tex-file`, `bib-file`, `artifacts-json`, `sarif-output`. Outputs: `readiness-score`, `status`, `total-findings`, `sarif-path`.
+
+The same report is available locally with `pip install limbo-audit && limbo-audit ci-summary .`
+
+For full-turnaround audit sprints and University P-card retainers, see **[averycorp.org/services.html](https://averycorp.org/services.html)**.
 
 ---
 
@@ -29,6 +54,8 @@ Deterministic, lightweight (`numpy>=1.24` only) read-only diagnostic gates for *
 ## Installation
 
 ```bash
+pip install limbo-audit
+# or the latest main branch:
 pip install git+https://github.com/akarlin3/limboAudit.git
 ```
 
@@ -48,6 +75,9 @@ pytest -q
 ```bash
 # Run all Open-Core read-only gates on a LaTeX/Markdown manuscript directory
 limbo-audit check-all ./manuscript_dir
+
+# GitHub Job Summary Markdown + SARIF + step outputs (used by the GitHub Action)
+limbo-audit ci-summary . --sarif-output limbo-audit.sarif
 
 # Verify BibTeX identifiers, prose citations, and optional CITATIONS.md ledger
 limbo-audit check-citations --bib refs.bib --tex main.tex --ledger CITATIONS.md
