@@ -1,6 +1,6 @@
 {
   "package": "limbo-audit",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "suite": "Suite II: Scientific Identifiability & Null-Audit Suite",
   "stage_role": "Suite II: Zero-Phantom Citation, Numerical Traceability & Epistemic Null-Audit Gate",
   "status": "PASS",
@@ -27,7 +27,7 @@
   "seed": 42,
   "attestation": {
     "input_sha256": "447e0badcdda001609a27eda5adcb808e222a67a58a843ab4f4dbcab7468bb73",
-    "report_sha256": "96c9c444b2c0eb36571c8de0129ea555b44eb5917b4f0061b285f53911d77b09",
-    "platform_fingerprint": "linux-x86_64-py3.11-numpy2.4.6"
+    "report_sha256": "679fdb01b5ccb4cdbaf426feb1b201663a57517ac5f54043dc36bc23ab275304",
+    "platform_fingerprint": "linux-x86_64-py3.13-numpy2.5.3"
   }
 }
