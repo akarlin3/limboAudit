@@ -45,6 +45,7 @@ def test_zero_proprietary_modules_present_in_source_tree() -> None:
         "__init__.py",
         "audit.py",
         "bookmarklet.py",
+        "ci_summary.py",
         "citations.py",
         "cli.py",
         "consistency.py",
